@@ -1,6 +1,7 @@
 import time, sys
 from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
+from selenium.common.exceptions import NoSuchElementException        
 
 def checkByDay(month="Jun", day="26th", nights=1):
     if(len(sys.argv)==2):   #First Argument is day eg. 26th
@@ -20,8 +21,8 @@ def checkByDay(month="Jun", day="26th", nights=1):
     driver.find_element_by_xpath("//select[@name='selArrDay']/option[text()='%s']" %day).click()
     driver.find_element_by_xpath("//select[@name='selNumNights']/option[text()='%s']" %nights).click()
 
-    #Go to Calendar View
-    driver.find_element_by_id("MainContentPlaceHolder_CalendarLink").click()
+    #Go to List View
+    driver.find_element_by_id("MainContentPlaceHolder_ListLink").click()
 
     #Enter Tent as Equipment and 4 as group size
     driver.find_element_by_xpath("//select[@id='selPartySize']/option[text()='4']").click()
@@ -33,13 +34,16 @@ def checkByDay(month="Jun", day="26th", nights=1):
     driver.find_element_by_tag_name('body').send_keys(Keys.CONTROL + Keys.HOME)
     driver.execute_script("window.scrollTo(0, 200)") 
 
-    #Check the calendar and print if there is an available spot
-    if (driver.find_element_by_class_name("avail")):
-        availability = driver.find_element_by_class_name("avail")
-        parent = availability.find_element_by_xpath('..')
-        print("\nAvailability at " + parent.text)
-    else:
-        print("\nNot Available")
+    #Check the list and print if there is an available spot. If there is no availability, tag won't be found
+    try:
+        availability = driver.find_element_by_xpath('//td/img[@alt="Available"]')
+        #print (availability.tag_name)   #for debugging
+        parent = availability.find_element_by_xpath('./../..')
+        spot = parent.find_elements_by_tag_name("td")[1]
+        #print (parent.tag_name)        #for debugging
+        print("\nAvailability at " + spot.text)
+    except NoSuchElementException:
+        print("No Availability")
     checkAllCalendar()
 
 def checkAllCalendar():
