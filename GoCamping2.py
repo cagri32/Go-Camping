@@ -34,3 +34,14 @@ try:
     print("\nAvailability at " + spot.text)
 except NoSuchElementException:
     print("No Availability")
+
+#New Tab for Searching all Campsite
+driver.execute_script("window.open('about:blank', 'tab3');")
+driver.switch_to.window("tab3")
+driver.get("https://reservation.pc.gc.ca/Banff?Calendar")
+#All entries are taken from previous tab automatically
+
+#Visual Adjustments to the tab
+driver.execute_script("document.body.style.zoom='80%'")
+driver.find_element_by_tag_name('body').send_keys(Keys.CONTROL + Keys.HOME)
+driver.execute_script("window.scrollTo(0, 200)")
