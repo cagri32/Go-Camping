@@ -1,7 +1,9 @@
 import time, sys
 from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
-from selenium.common.exceptions import NoSuchElementException        
+from selenium.common.exceptions import NoSuchElementException  
+
+#List View Version
 
 def checkByDay(month="Jun", day="26th", nights=1):
     if(len(sys.argv)==2):   #First Argument is day eg. 26th
