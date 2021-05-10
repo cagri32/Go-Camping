@@ -1,7 +1,15 @@
+import time, sys
 from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
 
 def checkByDay(month="Jun", day="26th", nights=1):
+    if(len(sys.argv)==2):   #First Argument is day eg. 26th
+        day = sys.argv[1]
+    elif(len(sys.argv)==3): #Second Argument is month eg. Jun
+        month = sys.argv[2]
+    elif(len(sys.argv)==4): #Third Argument is nights eg. 3
+        nights = sys.argv[3]
+
     global driver
     driver = webdriver.Chrome('./chromedriver')
     #Search Two Jack Lakeside
