@@ -22,7 +22,7 @@ My long-term plans are:
 - to have it calculate the average cost for the planned booking
 - and finally turn it into a website using React JS so that others can benefit from it.
 
-My efforts are already paid off. As of today, I found the spot I am looking for.
+My efforts are already paid off for. As of today, I found the spot I am looking for.
 Now I will continue to look for a better spot at Two Jack Lakeside Site and continue developing this program.
 
 
