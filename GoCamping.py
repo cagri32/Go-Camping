@@ -1,6 +1,7 @@
 import time, sys
 from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
+from selenium.common.exceptions import NoSuchElementException  
 
 #Calendar View Version
 
@@ -36,11 +37,11 @@ def checkByDay(month="Jun", day="26th", nights=1):
     driver.execute_script("window.scrollTo(0, 200)") 
 
     #Check the calendar and print if there is an available spot
-    if (driver.find_element_by_class_name("avail")):
+    try:
         availability = driver.find_element_by_class_name("avail")
         parent = availability.find_element_by_xpath('..')
         print("\nAvailability at " + parent.text)
-    else:
+    except NoSuchElementException:
         print("\nNot Available")
     checkAllCalendar()
 
