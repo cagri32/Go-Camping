@@ -80,7 +80,7 @@ def checkAllCalendar():
     driver.execute_script("window.scrollTo(0, 200)") 
     return driver
 
-waittime = 900 # in terms of seconds. Every 15 minutes
+waittime = 10 # in terms of seconds. Every 15 minutes
 while True:
     a = datetime.now().second
     if (a % waittime) == 0: 
