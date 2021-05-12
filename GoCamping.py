@@ -1,4 +1,6 @@
 import time, sys
+from datetime import datetime
+from time import sleep
 from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
 from selenium.common.exceptions import NoSuchElementException  
@@ -13,10 +15,13 @@ def checkByDay(month="Jun", day="26th", nights=1):
     elif(len(sys.argv)==4): #Third Argument is nights eg. 3
         nights = sys.argv[3]
 
-    global driver
+    park = "Banff"
+    site = "TwoJackLakeside"
+    global driver, availability
+    availability = False
     driver = webdriver.Chrome('./chromedriver')
     #Search Two Jack Lakeside
-    driver.get("https://reservation.pc.gc.ca/Banff/TwoJackLakeside?Calendar")
+    driver.get("https://reservation.pc.gc.ca/%s/%s?Calendar" %(park, site))
 
     #Enter Month, Day and Number of Nights to Stay
     driver.find_element_by_xpath("//select[@name='selArrMth']/option[text()='%s']" %month).click()
@@ -41,9 +46,11 @@ def checkByDay(month="Jun", day="26th", nights=1):
         availability = driver.find_element_by_class_name("avail")
         parent = availability.find_element_by_xpath('..')
         print("\nAvailability at " + parent.text)
+        checkAllCalendar()
+        availability = True
     except NoSuchElementException:
         print("\nNot Available")
-    checkAllCalendar()
+    
 
 def checkAllCalendar():
     #New Tab for Searching all Campsite
@@ -61,4 +68,16 @@ def checkAllCalendar():
     driver.execute_script("window.scrollTo(0, 200)") 
     return driver
 
-checkByDay()
+waittime = 900 # in terms of seconds. Every 15 minutes
+while True:
+    a = datetime.now().second
+    if (a % waittime) == 0: 
+        checkByDay()        # Do the task
+        if availability:
+            break           # if an availability found, stop the code
+        sleep(5)            # wait 5 seconds before closing the browser
+        driver.quit()
+        while True:         # discard any milliseconds or duplicated 15 minutes
+            a = datetime.now().second
+            if (a % waittime) != 0:
+                break
