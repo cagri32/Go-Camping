@@ -1,22 +1,30 @@
-import time, sys
+import time, sys, argparse
 from datetime import datetime
 from time import sleep
 from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
 from selenium.common.exceptions import NoSuchElementException  
 
+# Following piece of code is utilized to receive arguments to run the script with
+parser=argparse.ArgumentParser()
+parser.add_argument('--month', help='Enter the first 3 letters of the month you want to visit in eg. Jun, Aug')
+parser.add_argument('--day', help='Enter the day as ordinal number eg. 1st, 5th, 23rd')
+parser.add_argument('--nights', help='Enter the number of nights you want to stay eg. 1, 2, 5')
+parser.add_argument('--park', help='Enter the name of the park you want to visit eg. Banff, Bruce Peninsula')
+parser.add_argument('--site', help='Enter the name of the site you want to camp at eg. Two Jack Lakeside')
+argms=parser.parse_args()
+# pass parameters as --bar=bar-val and access them using argms.bar
+
 #List View Version
 
-def checkByDay(month="Jun", day="26th", nights=1):
-    if(len(sys.argv)==2):   #First Argument is day eg. 26th
-        day = sys.argv[1]
-    elif(len(sys.argv)==3): #Second Argument is month eg. Jun
-        month = sys.argv[2]
-    elif(len(sys.argv)==4): #Third Argument is nights eg. 3
-        nights = sys.argv[3]
+#Default arguments passed to make sure no field is left empty
+def checkByDay(month="Jun", day="26th", nights=1, park = "Banff", site = "TwoJackLakeside"):
+    if (argms.month != None): month = argms.month       # Use the parameters if passed any
+    if (argms.day != None): day = argms.day
+    if (argms.nights != None): nights = argms.nights
+    if (argms.park != None): park = argms.park
+    if (argms.site != None): site = argms.site
 
-    park = "Banff"
-    site = "TwoJackLakeside"
     global driver, availability
     availability = False
     driver = webdriver.Chrome('./chromedriver')
